@@ -79,6 +79,7 @@
             wordwrap = widget.getAttribute('data-wordwrap'),
             minlines = widget.getAttribute('data-minlines'),
             maxlines = widget.getAttribute('data-maxlines'),
+            showtoolbar = widget.getAttribute('data-toolbar'),
             showprintmargin = widget.getAttribute('data-showprintmargin'),
             toolbar = prev(widget),
             main_block = toolbar.parentNode;
@@ -91,6 +92,11 @@
         };
 
         editor.getSession().setValue(textarea.value);
+
+        // hide the toolbar if not wanted
+        if (showtoolbar=='false') {
+            toolbar.style.display = "none";
+        }
 
         // the editor is initially absolute positioned
         textarea.style.display = "none";

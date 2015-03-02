@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 
 class AceWidget(forms.Textarea):
     def __init__(self, mode=None, theme=None, wordwrap=False, width="500px",
-                 height="300px", minlines=None, maxlines=None,
+                 height="300px", minlines=None, maxlines=None, toolbar=True,
                  showprintmargin=True, *args, **kwargs):
         self.mode = mode
         self.theme = theme
@@ -18,6 +18,7 @@ class AceWidget(forms.Textarea):
         self.height = height
         self.minlines = minlines
         self.maxlines = maxlines
+        self.toolbar = toolbar
         self.showprintmargin = showprintmargin
         super(AceWidget, self).__init__(*args, **kwargs)
 
@@ -53,14 +54,12 @@ class AceWidget(forms.Textarea):
             ace_attrs["data-minlines"] = str(self.minlines)
         if self.maxlines:
             ace_attrs["data-maxlines"] = str(self.maxlines)
+        ace_attrs["data-toolbar"] = "true" if self.toolbar else "false"
         ace_attrs["data-showprintmargin"] = "true" if self.showprintmargin else "false"
 
         textarea = super(AceWidget, self).render(name, value, attrs)
 
-
-        html = '<div%s><div></div></div>%s' % (flatatt(ace_attrs), textarea)
-
-        # add toolbar
-        html = '<div class="django-ace-editor"><div style="width: %s" class="django-ace-toolbar"><a href="./" class="django-ace-max_min"></a></div>%s</div>' % (self.width, html)
+        toolbar_html = '<div style="width: %s" class="django-ace-toolbar"><a href="./" class="django-ace-max_min"></a></div>' % self.width
+        html = '<div class="django-ace-editor">%s<div%s><div></div></div>%s</div>' % (toolbar_html, flatatt(ace_attrs), textarea)
 
         return mark_safe(html)
