@@ -81,6 +81,10 @@
             maxlines = widget.getAttribute('data-maxlines'),
             showtoolbar = widget.getAttribute('data-toolbar'),
             showprintmargin = widget.getAttribute('data-showprintmargin'),
+            showinvisibles = widget.getAttribute('data-showinvisibles'),
+            tabsize = widget.getAttribute('data-tabsize'),
+            fontsize = widget.getAttribute('data-fontsize'),
+            usesofttabs = widget.getAttribute('data-usesofttabs'),
             toolbar = prev(widget),
             main_block = toolbar.parentNode;
 
@@ -120,6 +124,18 @@
         }
         if (showprintmargin == "false") {
             editor.setShowPrintMargin(false);
+        }
+        if (showinvisibles == "true") {
+            editor.setShowInvisibles(true);
+        }
+        if (!!tabsize) {
+            editor.setOption("tabSize", tabsize);
+        }
+        if (!!fontsize) {
+            editor.setOption("fontSize", fontsize);
+        }
+        if (usesofttabs == "false") {
+            editor.getSession().setUseSoftTabs(false);
         }
 
         editor.getSession().on('change', function() {
